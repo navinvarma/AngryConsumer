@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html lang="en" ng-app="consumerComplaintsApp">
+
+<head>
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<title>Angry Consumer!</title>
+	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css">
+	<link rel="stylesheet" href="/assets/custom.min.css">
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
+	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js"></script>
+	<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.3.11/angular.min.js"></script>
+	<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.3.11/angular-route.min.js"></script>
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/angular-ui-bootstrap/0.13.0/ui-bootstrap-tpls.min.js"></script>
+	<script src="controller.js"></script>
+</head>
+
+<body>
+	<div class="container-fluid" id="container" ng-controller="consumerComplaintsController">
+		<div class="page-header">
+			<h1 class="text-primary">Angry Consumer!</h1>
+		</div>
+		<div class="collapse navbar-collapse">
+			<ul class="nav navbar-nav">
+				<li ng-class="active"><a href="/">Home</a></li>
+				<li><a href="/visualization">Visualization</a></li>
+				<li><a href="/about">About</a></li>
+			</ul>
+		</div>
+		<div class="panel-body">
+			<div class="form-group">
+				<div class="input-group">
+					<input type="text" class="form-control" ng-model="companyName"
+						typeahead="entry for entry in companies | filter:$viewValue | limitTo: 10"
+						placeholder="Type company name here...">
+					<span class="input-group-btn">
+						<button class="btn btn-default" type="button" ng-click="filterChanged()">Search</button>
+					</span>
+					<span class="input-group-btn">
+						<button class="btn btn-default" type="button"
+							ng-click="companyName='';fetchedCompany='';filterChanged()">Reset</button>
+					</span>
+				</div>
+			</div>
+			<div class="control-group">
+				Company responded in a timely manner
+				<select class="form-control-static" name="timelyResponse" ng-model="timelyResponse"
+					ng-change="filterChanged()">
+					<option value=""></option>
+					<option value="Yes">Yes</option>
+					<option value="No">No</option>
+				</select>
+				&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+				Consumer has disputed response
+				<select class="form-control-static" name="consumerDisputed" ng-model="consumerDisputed"
+					ng-change="filterChanged()">
+					<option value=""></option>
+					<option value="Yes">Yes</option>
+					<option value="No">No</option>
+				</select>
+				&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+				Page Size
+				<select class="form-control-static" name="pageSize" ng-model="pageSize" ng-change="filterChanged()">
+					<option value="10">10</option>
+					<option value="25">25</option>
+					<option value ="50">50</option>
+					<option value="100">100</option>
+				</select>
+			</div>
+		</div>
+		<div class="text-center" ng-if="totalPages > 1">
+			<ul class="pagination no-margin">
+				<button type="button" class="btn btn-default" ng-disabled="currentPage == 1" ng-click="firstPage()"
+					title="First Page" alt="First Page">
+					< </button>
+						<button type="button" class="btn btn-default" ng-disabled="currentPage == 1 "
+							ng-click="prevPage()" title="Previous Page" alt="Previous Page">
+						<< </button>
+								<button type="button" class="btn btn-default" ng-disabled="currentPage >= totalPages"
+									ng-click="nextPage()" title="Next Page" alt="Next Page">></button>
+								<button type="button" class="btn btn-default" ng-disabled="currentPage >= totalPages"
+									ng-click="lastPage()" title="Last Page" alt="Last Page">>></button>
+			</ul>
+		</div>
+		<table class="table table-striped table-bordered" name="complaintsTable">
+			<caption>
+				<p>Displaying page {{totalPages?currentPage:totalPages}} of {{totalPages}} pages{{fetchedCompany ? "
+					from "+fetchedCompany.company : ""}} at {{pageSize}} per page. Total Complaints: {{count}}</p>
+			</caption>
+			<tr>
+				<th>Company</th>
+				<th>Product</th>
+				<th>Sub-Product</th>
+				<th>Issue</th>
+				<th>Sub-Issue</th>
+				<th>Complaint ID</th>
+				<th>Date Received</th>
+				<th>Date Sent to Company</th>
+				<th>Company Response</th>
+				<th>Timely Response?</th>
+				<th>Consumer Disputed?</th>
+			</tr>
+			<tr ng-repeat="complaint in complaints | orderBy: 'ComplaintID' ">
+				<td>{{complaint.company}}</td>
+				<td>{{complaint.product}}</td>
+				<td>{{complaint.sub_product}}</td>
+				<td>{{complaint.issue}}</td>
+				<td>{{complaint.sub_issue}}</td>
+				<td>{{complaint.complaint_id}}</td>
+				<td>{{complaint.date_received | date:'MM/dd/yyyy'}}</td>
+				<td>{{complaint.date_sent_to_company | date:'MM/dd/yyyy'}}</td>
+				<td>{{complaint.company_response}}</td>
+				<td>{{complaint.is_timely_response}}</td>
+				<td>{{complaint.has_consumer_disputed}}</td>
+			</tr>
+		</table>
+	</div>
+	<div class="footer">
+		Developed by <a target="_blank" href="https://www.nvarma.com">Navin Varma</a>
+	</div>
+</body>
+
+</html>

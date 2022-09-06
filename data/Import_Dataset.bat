@@ -1,0 +1,1 @@
+mongoimport --db consumer-finance-explore --collection complaints --type csv --headerline --drop --file C:\Users\navin\Documents\Projects\ConsumerComplaints\data\Consumer_Complaints.csv

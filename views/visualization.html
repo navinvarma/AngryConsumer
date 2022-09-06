@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="en" ng-app="consumerComplaintsApp">
+
+<head>
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<title>Angry Consumer!</title>
+	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css">
+	<link rel="stylesheet" href="/assets/custom.min.css">
+	<link rel="stylesheet" href="https://cdn.rawgit.com/novus/nvd3/v1.8.1/build/nv.d3.css">
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
+	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js"></script>
+	<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.3.11/angular.min.js"></script>
+	<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.3.11/angular-route.min.js"></script>
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/angular-ui-bootstrap/0.13.0/ui-bootstrap-tpls.min.js"></script>
+	<script type="text/javascript" src="https://www.google.com/jsapi"></script>
+
+	<script src="controller.js"></script>
+	<script type="text/javascript">
+		var cache = {}
+		// Load the Visualization API and the piechart package.
+		google.load('visualization', '1.0', { 'packages': ['corechart'] });
+
+		$(document).ready(function () {
+			$("#selectedChart").change(function () {
+				$(".progressbar").show();
+				var api = $("#selectedChart option:selected").val();
+				var title = $("#selectedChart option:selected").text();
+
+				if (api in cache) {
+					drawChart(cache[api]);
+				} else {
+					$.get(api, function (data) {
+						cache[api] = data;
+						drawChart(data);
+					});
+
+				}
+
+			});
+			function drawChart(data) {
+				var sourcedata = data;
+				var chartdata = [];
+				for (var i = 0; i < sourcedata.length; i++) {
+					chartdata[i] = [sourcedata[i]._id, sourcedata[i].count];
+				}
+				// Create the data table.
+				var data = new google.visualization.DataTable();
+
+				data.addColumn('string', 'Company');
+				data.addColumn('number', 'Number of complaints');
+				data.addRows(chartdata);
+
+				// Set chart options
+				var options = {
+					'width': 1280,
+					'height': 800,
+					is3D: true,
+					sliceVisibilityThreshold: .019
+				};
+
+				// Instantiate and draw our chart, passing in some options.
+				var piechart = new google.visualization.PieChart(document.getElementById('complaintsPieChart'));
+				piechart.draw(data, options);
+				$(".progressbar").hide();
+			}
+			$("select#selectedChart").change();
+		});
+	</script>
+</head>
+
+<body>
+	<div class="container-fluid" id="container" ng-controller="consumerComplaintsController">
+		<div class="page-header">
+			<h1 class="text-primary">Angry Consumer!</h1>
+		</div>
+		<div class="collapse navbar-collapse">
+			<ul class="nav navbar-nav">
+				<li ng-class="active"><a href="/">Home</a></li>
+				<li><a href="/visualization">Visualization</a></li>
+				<li><a href="/about">About</a></li>
+			</ul>
+		</div>
+		<div class="row col-sm-offset-1">
+			<div class="form-group">
+				<select id="selectedChart" name="selectedChart" class="form-control-static">
+					<option value="/complaints/mostComplainedAboutCompany">Most Complained About Company</option>
+					<option value="/complaints/mostComplainedAboutProduct">Most Complained About Product</option>
+					<option value="/complaints/mostComplainedAboutSubProduct">Most Complained About Sub-Product</option>
+					<option value="/complaints/mostComplainedAboutIssue">Most Complained About Issue</option>
+					<option value="/complaints/mostComplainedAboutSubIssue">Most Complained About Sub-Issue</option>
+					<option value="/complaints/mostFrequentCompanyResponse">Most Frequent Company Response</option>
+				</select>
+				<span class="progressbar"><span class="glyphicon glyphicon-refresh spinning"></span> Loading... </span>
+			</div>
+		</div>
+		<div class="row">
+			<div id="complaintsPieChart">
+
+			</div>
+		</div>
+	</div>
+	<div class="footer">
+		Developed by <a target="_blank" href="https://www.nvarma.com">Navin Varma</a>
+	</div>
+</body>
+
+</html>

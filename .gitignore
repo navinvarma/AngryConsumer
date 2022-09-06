@@ -1,3 +1,11 @@
+# Data
+/data/Consumer_Complaints.csv
+
+# Config
+config.production.js
+config.local.js
+package-lock.json
+
 # Logs
 logs
 *.log

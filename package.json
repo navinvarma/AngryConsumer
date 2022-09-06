@@ -1,0 +1,21 @@
+{
+    "name": "angry-consumer",
+    "version": "1.0.0",
+    "description": "A web app that provides filtering and visualizations for compliants received by the Consumer Finance Protection Bureau (CFPB).",
+    "author": "Navin Varma <navinvarma@gmail.com>",
+    "keywords": [
+        "visualization",
+        "complaint",
+        "consumer",
+        "bigdata"
+    ],
+    "dependencies": {
+        "body-parser": "^1.19.0",
+        "express": "^4.17.1",
+        "mongodb": "3.6.x",
+        "path": "0.11.x"
+    },
+    "preferGlobal": false,
+    "private": true,
+    "license": "MIT"
+}
