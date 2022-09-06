@@ -3,12 +3,12 @@ A web app that provides filtering and visualizations for compliants received by 
 
 # Technologies
 This web application runs on a MEAN stack and was originally developed in 2016 using the package versions available at that time. See "Additional Notes"
-* MongoDB collection to store data from CPFB public dataset.
-* Express middleware to connect API routes to Node.js server.
-* AngularJS for conroller to interact with API routes.
-* Node.js for app server and queries to MongoDB.
-* Bootstrap for UI theme & custom CSS
-* Google Charts API for visualizations
+* [MongoDB Community Server](https://www.mongodb.com/try/download/community) collection to store data from CPFB public dataset.
+* [Express](https://expressjs.com/) middleware to connect API routes to Node.js server.
+* [AngularJS](https://angularjs.org/) for conroller to interact with API routes.
+* [Node.js](https://nodejs.org/en/) for app server and queries to MongoDB.
+* [Bootstrap](https://getbootstrap.com/) for UI theme & custom CSS.
+* [Google Charts API](https://developers.google.com/chart) for visualizations.
 
 # Data
 Consumer Complaints Database is a public [dataset](https://www.consumerfinance.gov/data-research/consumer-complaints/#download-the-data) available via consumerfinance.gov.
